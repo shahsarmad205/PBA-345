@@ -2,7 +2,7 @@
 
 ## Group Members
 - Sarmad Shah
-- Kyra Maria
+- Kyra Delaney
 - Lamyae Kharbouch
 - Emma Giuffre
 
