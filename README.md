@@ -6,6 +6,8 @@
 - Lamyae Kharbouch
 - Emma Giuffre
 
+## Project Name
+- Budget Mate
 
 ## Project Description
 BudgetMate is a personal budgeting and expense tracking web application designed to help users manage their finances efficiently. The app allows users to record their income and expenses, categorize spending, and monitor their financial health over time.
