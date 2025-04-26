@@ -1,0 +1,176 @@
+/* === GLOBAL === */
+body {
+  margin: 0;
+  font-family: "Merriweather", serif;
+  background-color: #e5ecdf;
+  color: #2d3e2c;
+}
+
+/* === NAVIGATION === */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #d8e3d1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.logo {
+  height: 40px;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+}
+
+.logo-regular {
+  font-weight: 400;
+  color: #4a5e49;
+}
+
+.logo-bold {
+  font-weight: 700;
+  color: #2d3e2c;
+}
+
+.nav-links a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: #4a5e49;
+  font-weight: 500;
+}
+
+.nav-links a.active {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* === MAIN CONTENT === */
+.content-section {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  color: #3b5b3f;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  color: #444;
+}
+
+/* === INCOME DETAILS === */
+.income-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.income-item input[type="text"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #b9ccb2;
+  border-radius: 6px;
+  width: 200px;
+  background-color: #f9f9f9;
+}
+
+.edit-btn,
+.save-btn,
+.add-btn,
+.delete-btn {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #e4efdc;
+  color: #2d3e2c;
+}
+
+.save-btn {
+  background-color: #4a5e49;
+  color: white;
+  margin-top: 0.5rem;
+}
+
+.add-btn {
+  background-color: #314e36;
+  color: white;
+  margin-top: 1rem;
+}
+
+.delete-btn {
+  background-color: #f3c0c0;
+  color: #6e1c1c;
+}
+
+/* === ADDITIONAL INCOME TABLE === */
+.income-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.income-table thead {
+  background-color: #d8e3d1;
+}
+
+.income-table th,
+.income-table td {
+  padding: 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  vertical-align: middle;
+}
+
+.income-table input[type="text"],
+.income-table input[type="number"] {
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid #d8e3d1;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  background-color: #f9f9f9;
+  color: #4a5e49;
+}
+
+.income-table td:last-child {
+  white-space: nowrap;
+}
+
+.income-table button {
+  margin: 0 0.25rem;
+}
+
+/* === SECTION PADDING === */
+.current-income-section,
+.additional-income-section {
+  margin-top: 2rem;
+}

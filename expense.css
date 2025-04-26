@@ -1,0 +1,241 @@
+/* === BASE === */
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #e5ecdf;
+}
+
+/* === NAVIGATION === */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  background-color: #d8e3d1;
+}
+
+.logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo {
+  height: 45px;
+}
+
+.logo-text {
+  font-family: "Merriweather", serif;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.logo-regular {
+  font-weight: 400;
+  color: #4a5e49;
+}
+
+.logo-bold {
+  font-weight: 700;
+  color: #2e4c2b;
+}
+
+.nav-links a {
+  margin: 0 1rem;
+  text-decoration: none;
+  color: #4a5e49;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  text-decoration: underline;
+}
+
+/* === PAGE SECTION === */
+.content-section {
+  padding: 3rem 5rem;
+}
+
+.content-section h1 {
+  font-family: "Merriweather", serif;
+  color: #4a5e49;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.content-section p {
+  color: #6f776e;
+  margin-bottom: 2rem;
+}
+
+/* === TABS === */
+.tab-section {
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  background-color: #f0f4ed;
+  border: 2px solid #d8e3d1;
+  color: #4a5e49;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background-color: #d8e3d1;
+  border-color: #4a5e49;
+}
+
+/* === ADD BUTTON === */
+.add-category-btn {
+  background-color: #4a5e49;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.add-category-btn:hover {
+  background-color: #2e4c2b;
+}
+
+/* === TABLE STYLING === */
+.expenses-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.expenses-table thead {
+  background-color: #d8e3d1;
+}
+
+.expenses-table thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  color: #2e4c2b;
+  border-bottom: 2px solid #c9d8c5;
+}
+
+.expenses-table tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.expenses-table td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  color: #4a5e49;
+}
+
+/* === ACTION BUTTONS === */
+.action-btn {
+  background-color: #f0f4ed;
+  border: 1px solid #c2d1bd;
+  color: #2e4c2b;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin: 0 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.action-btn:hover {
+  background-color: #d8e3d1;
+  color: #1e321a;
+}
+
+/* === MODAL OVERLAY & DIALOG === */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  width: 320px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modal h3 {
+  margin: 0;
+  color: #2e4c2b;
+  font-size: 1.2rem;
+}
+
+.modal label {
+  font-weight: 600;
+  color: #4a5e49;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+}
+
+.modal input,
+.modal select {
+  padding: 0.45rem;
+  margin-top: 0.3rem;
+  border-radius: 5px;
+  border: 1px solid #c7d5c1;
+  font-size: 0.95rem;
+  background-color: #f9f9f9;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.modal-buttons button {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #eeeeee;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #ddd;
+}
+
+.confirm-btn {
+  background-color: #4a5e49;
+  color: white;
+  border: none;
+}
+
+.confirm-btn:hover {
+  background-color: #2e4c2b;
+}

@@ -1,0 +1,18 @@
+{
+    "python.linting.flake8Args": ["--ignore=E305"],
+    "python.analysis.extraPaths": ["."],
+    "python.linting.flake8Enabled": false,
+"python.linting.enabled": false,
+"python.testing.unittestArgs": [
+  "-v",
+  "-s",
+  "./pba",
+  "-p",
+  "*test.py"
+],
+"python.testing.pytestEnabled": false,
+"python.testing.unittestEnabled": true,
+"python.linting.flake8Enabled": false
+
+
+  }

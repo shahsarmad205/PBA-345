@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #e5ecdf;
+}
+
+/* Header */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #d8e3d1;
+}
+
+.logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo {
+  height: 45px;
+}
+
+.logo-text {
+  font-family: "Merriweather", serif;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+}
+
+.logo-regular {
+  font-weight: 400;
+  color: #4a5e49;
+}
+
+.logo-bold {
+  font-weight: 700;
+  color: #2e4c2b;
+}
+
+.nav-links a {
+  margin: 0 1rem;
+  text-decoration: none;
+  color: #4a5e49;
+  font-weight: bold;
+}
+
+/* Profile Layout */
+.profile-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.profile-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 20px;
+  width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.profile-card h2 {
+  margin-bottom: 0.2rem;
+  color: #2e4c2b;
+}
+
+.profile-card p {
+  color: #6f776e;
+  margin-bottom: 1.5rem;
+}
+
+/* Sections */
+.section {
+  background-color: #f0f4ec;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.section.bordered {
+  border: 2px solid #b5c7ae;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.section-title h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #3b513a;
+}
+
+.edit-icon {
+  font-size: 1rem;
+  cursor: pointer;
+  color: #3b513a;
+}
+
+/* Field Display */
+.field-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #d6dfd0;
+  font-size: 0.95rem;
+}
+
+.field-row:last-child {
+  border-bottom: none;
+}
+.editable-input {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.95rem;
+  background-color: #fff;
+  width: 60%;
+}

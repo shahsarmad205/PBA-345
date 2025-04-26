@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Settings | BudgetMate</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="profileSettings.css" />
+  </head>
+  <body class="profile-page auth-required">
+    <header class="top-nav">
+      <div class="logo-brand">
+        <img src="budgetmate-logo.png" alt="BudgetMate Logo" class="logo" />
+        <span class="logo-text">
+          <span class="logo-regular">Budget</span>
+          <span class="logo-bold">Mate</span>
+        </span>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html">Home</a>
+        <a href="#">Expenses</a>
+        <a href="#">Income</a>
+        <a href="profileSettings.html">Profile</a>
+      </nav>
+    </header>
+
+    <main class="profile-section">
+      <div class="profile-card">
+        <h2>Profile</h2>
+        <p>Manage your account settings</p>
+
+        <!-- Account Section -->
+        <div class="section">
+          <div class="section-title">
+            <h3>Account</h3>
+            <span class="edit-icon">✏️</span>
+          </div>
+          <div class="field-row">
+            <span>Email</span>
+            <span id="email-field"></span>
+          </div>
+          <div class="field-row">
+            <span>Password</span>
+            <span id="password-field"></span>
+          </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="section bordered">
+          <div class="section-title">
+            <h3>Information</h3>
+            <span class="edit-icon">✏️</span>
+          </div>
+          <div class="field-row">
+            <span>Address</span>
+            <span id="address-field"></span>
+          </div>
+          <div class="field-row">
+            <span>State</span>
+            <span id="state-field"></span>
+          </div>
+          <div class="field-row">
+            <span>Zip</span>
+            <span id="zip-field"></span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

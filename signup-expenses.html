@@ -15,9 +15,9 @@
           type="number"
           id="housing"
           name="housing"
-          min="0"
-          placeholder="$"
-          required
+          class="signup-expense-amount"
+          data-category="Housing"
+          data-recurring="false"
         />
 
         <label for="utilities">Utilities</label>
@@ -25,9 +25,9 @@
           type="number"
           id="utilities"
           name="utilities"
-          min="0"
-          placeholder="$"
-          required
+          class="signup-expense-amount"
+          data-category="Utilities"
+          data-recurring="false"
         />
 
         <label for="transport">Transportation</label>
@@ -35,9 +35,9 @@
           type="number"
           id="transport"
           name="transport"
-          min="0"
-          placeholder="$"
-          required
+          class="signup-expense-amount"
+          data-category="Transportation"
+          data-recurring="false"
         />
 
         <label for="groceries">Groceries</label>
@@ -45,9 +45,9 @@
           type="number"
           id="groceries"
           name="groceries"
-          min="0"
-          placeholder="$"
-          required
+          class="signup-expense-amount"
+          data-category="Groceries"
+          data-recurring="false"
         />
 
         <label for="subscriptions">Subscriptions & Memberships</label>
@@ -55,9 +55,9 @@
           type="number"
           id="subscriptions"
           name="subscriptions"
-          min="0"
-          placeholder="$"
-          required
+          class="signup-expense-amount"
+          data-category="Subscriptions"
+          data-recurring="false"
         />
 
         <label for="otherExpenses">Other Expenses</label>
@@ -65,8 +65,9 @@
           type="number"
           id="otherExpenses"
           name="otherExpenses"
-          min="0"
-          placeholder="$"
+          class="signup-expense-amount"
+          data-category="Other"
+          data-recurring="false"
         />
 
         <div class="form-nav">
@@ -74,5 +75,6 @@
         </div>
       </form>
     </div>
+    <script src="script.js"></script>
   </body>
 </html>

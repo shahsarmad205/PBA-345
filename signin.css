@@ -1,0 +1,90 @@
+/* Body stays simple now */
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #e5ecdf;
+}
+
+/* Header nav */
+.top-nav {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #d8e3d1;
+}
+
+/* Logo styles */
+.logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.logo {
+  height: 45px;
+}
+.logo-text {
+  font-family: "Merriweather", serif;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+}
+.logo-regular {
+  font-weight: 400;
+  color: #4a5e49;
+}
+.logo-bold {
+  font-weight: 700;
+  color: #2e4c2b;
+}
+
+/* ✅ This centers the login box */
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* subtracts space for the nav */
+  padding-top: 2rem;
+}
+
+/* Login container */
+.login-container {
+  background-color: rgb(253, 253, 253);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.login-container input[type="email"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.login-container button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background-color: #a8bfa3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.login-container button:hover {
+  background-color: #8aa68c; /* ✅ consistent with your green theme */
+}
+.top-nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.center-wrapper {
+  margin-top: 80px; /* pushes the login down below the nav */
+}
