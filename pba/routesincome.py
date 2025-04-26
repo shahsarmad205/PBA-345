@@ -8,11 +8,6 @@ from .auth_middleware import token_required
 
 income_bp = Blueprint('income', __name__)
 
-# Handle OPTIONS requests for CORS preflight
-@income_bp.route('/', methods=['OPTIONS'])
-def handle_options():
-    return jsonify({"message": "CORS preflight request handled"}), 200
-
 @income_bp.route('/add', methods=['POST'])
 @token_required
 def add_income(current_user):

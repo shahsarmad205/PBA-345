@@ -151,17 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-  
-  // === GUARD PROTECTED ROUTES ===
-  const isProtected = document.body.classList.contains("auth-required");
-  if (isProtected && !localStorage.getItem("token")) {
-    alert("Please log in first.");
-    window.location.href = "signin.html";
-  }
- // === PROFILE EDIT & SAVE ===
-  const editIcons = document.querySelectorAll(".edit-icon");
-  editIcons.forEach((icon) => {
-    icon.addEventListener("click", async () => {
+
+  // === PROFILE EDIT & SAVE ===
+const editIcons = document.querySelectorAll(".edit-icon");
+editIcons.forEach((icon) => {
+  icon.addEventListener("click", async () => {
     const section = icon.closest(".section");
     const isEditing = icon.classList.contains("editing");
     const rows = section.querySelectorAll(".field-row");
@@ -231,6 +225,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+  // === GUARD PROTECTED ROUTES ===
+  const isProtected = document.body.classList.contains("auth-required");
+  if (isProtected && !localStorage.getItem("token")) {
+    alert("Please log in first.");
+    window.location.href = "signin.html";
+  }
 
   // === LOAD PROFILE DATA ===
   const isProfilePage = document.body.classList.contains("profile-page");

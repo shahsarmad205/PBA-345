@@ -13,5 +13,5 @@ class Goal(db.Model):
     deadline = db.Column(db.Date)
     priority = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    completed = db.Column(db.Boolean, default=False)
+    
     user = db.relationship('User', backref=db.backref('goals', lazy=True))

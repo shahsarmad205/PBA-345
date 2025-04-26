@@ -11,7 +11,7 @@
       <h2>Sign Up - Step 4: Financial Goals</h2>
       <form
         action="dashboard.html"
-        method="post"
+        method="get"
         class="signup-form"
         id="goalForm"
       >
@@ -27,30 +27,18 @@
           <input
             type="text"
             name="goalName[]"
-            class="signup-goal-name"
             placeholder="e.g. Emergency Fund"
             required
           />
 
           <label>Target Amount ($)</label>
-          <input
-            type="number"
-            name="goalAmount[]"
-            class="signup-goal-target"
-            min="0"
-            required
-          />
+          <input type="number" name="goalAmount[]" min="0" required />
 
           <label>Target Date</label>
-          <input
-            type="date"
-            name="goalDeadline[]"
-            class="signup-goal-deadline"
-            required
-          />
+          <input type="date" name="goalDeadline[]" required />
 
           <label>Priority Level</label>
-          <select name="goalPriority[]" class="signup-goal-priority" required>
+          <select name="goalPriority[]" required>
             <option value="" disabled selected>Select priority</option>
             <option value="high">High</option>
             <option value="medium">Medium</option>
@@ -65,8 +53,8 @@
           <button type="submit" class="next-btn">Finish →</button>
         </div>
       </form>
-    </div>
 
-    <script src="script.js"></script>
+      <script src="script.js"></script>
+    </div>
   </body>
 </html>
