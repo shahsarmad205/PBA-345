@@ -4,17 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Goals | BudgetMate</title>
-    <!-- Import fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <!-- External CSS -->
     <link rel="stylesheet" href="goals.css" />
-    <!-- Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add Flatpickr for date picking -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </head>
-  <body>
+
+  <body class="auth-required">
     <header class="top-nav">
       <div class="logo-brand">
         <img src="budgetmate-logo.png" alt="BudgetMate Logo" class="logo" />
@@ -44,27 +48,27 @@
             </button>
             <button class="tab-btn" id="completedTab">Completed Goals</button>
           </div>
-          <button class="add-goal-btn">Add Goal</button>
+
+          <button class="add-goal-btn" id="openModalBtn">Add Goal</button>
+
           <div class="goals-container" id="uncompletedGoals">
             <table class="goals-table">
               <thead>
                 <tr>
                   <th>Goal</th>
+                  <th>Target Amount</th>
+                  <th>Current Amount</th>
                   <th>Date By</th>
+                  <th>Priority</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Save for Vacation</td>
-                  <td>9/13/25</td>
-                </tr>
-                <tr>
-                  <td>Pay off Credit Card</td>
-                  <td>2/25/26</td>
-                </tr>
+              <tbody id="uncompleted-goal-body">
+                <!-- Dynamically filled -->
               </tbody>
             </table>
           </div>
+
           <div
             class="goals-container"
             id="completedGoals"
@@ -74,31 +78,27 @@
               <thead>
                 <tr>
                   <th>Goal</th>
+                  <th>Target Amount</th>
+                  <th>Saved Amount</th>
                   <th>Completed On</th>
+                  <th>Priority</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Buy New Phone</td>
-                  <td>1/10/25</td>
-                </tr>
-                <tr>
-                  <td>Pay Off Small Loan</td>
-                  <td>12/15/24</td>
-                </tr>
+              <tbody id="completed-goal-body">
+                <!-- Dynamically filled -->
               </tbody>
             </table>
           </div>
         </section>
 
-        <!-- CHARTS SECTION -->
+        <!-- Charts Section -->
         <section class="charts-section">
-          <!-- Chart Box 1: Where Money Went -->
           <div class="chart-box">
             <h3>Where Money Went</h3>
             <canvas id="moneyPieChart"></canvas>
           </div>
-          <!-- Chart Box 2: Comparison of Monthly Saving -->
+
           <div class="chart-box">
             <h3>Comparison of Monthly Saving</h3>
             <canvas id="monthlyLineChart"></canvas>
@@ -107,8 +107,250 @@
       </div>
     </main>
 
+    <!-- Modal for adding/editing goals -->
+    <div id="goalModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modalTitle">Add New Goal</h2>
+
+        <form id="goalForm">
+          <input type="hidden" id="goalId" value="" />
+
+          <div class="form-group">
+            <label for="goalName">Goal Name</label>
+            <input type="text" id="goalName" required />
+          </div>
+
+          <div class="form-group">
+            <label for="targetAmount">Target Amount ($)</label>
+            <input
+              type="number"
+              id="targetAmount"
+              min="0"
+              step="0.01"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="currentAmount">Current Amount ($)</label>
+            <input
+              type="number"
+              id="currentAmount"
+              min="0"
+              step="0.01"
+              value="0"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="deadline">Target Date</label>
+            <input type="text" id="deadline" class="datepicker" required />
+          </div>
+
+          <div class="form-group">
+            <label for="priority">Priority</label>
+            <select id="priority" required>
+              <option value="">-- Select Priority --</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="cancelBtn">Cancel</button>
+            <button type="submit" id="saveGoalBtn">Save Goal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <style>
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        position: relative;
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 25px;
+        border-radius: 8px;
+        width: 500px;
+        max-width: 90%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .form-actions button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      #cancelBtn {
+        background-color: #f2f2f2;
+        color: #333;
+      }
+
+      #saveGoalBtn {
+        background-color: #2ca02c;
+        color: white;
+      }
+
+      /* Table improvements */
+      .goals-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .goals-table th,
+      .goals-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .goals-table th {
+        background-color: #f8f8f8;
+      }
+
+      .edit-btn,
+      .mark-complete-btn,
+      .delete-btn {
+        padding: 5px 10px;
+        margin-right: 5px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .edit-btn {
+        background-color: #4c9aff;
+        color: white;
+      }
+
+      .mark-complete-btn {
+        background-color: #2ca02c;
+        color: white;
+      }
+
+      .delete-btn {
+        background-color: #ff4d4d;
+        color: white;
+      }
+
+      /* Priority colors */
+      .priority-low {
+        color: #2ca02c;
+      }
+
+      .priority-medium {
+        color: #ff9933;
+      }
+
+      .priority-high {
+        color: #ff4d4d;
+      }
+    </style>
+
     <script>
-      // Tab switching between uncompleted and completed goals
+      const token = localStorage.getItem("token");
+
+      // === MODAL FUNCTIONALITY ===
+      const modal = document.getElementById("goalModal");
+      const openModalBtn = document.getElementById("openModalBtn");
+      const closeBtn = document.querySelector(".close");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const goalForm = document.getElementById("goalForm");
+      const modalTitle = document.getElementById("modalTitle");
+      let isEditing = false;
+
+      // Initialize datepicker
+      document.addEventListener("DOMContentLoaded", function () {
+        flatpickr("#deadline", {
+          dateFormat: "Y-m-d",
+          minDate: "today",
+        });
+      });
+
+      openModalBtn.onclick = function () {
+        resetForm();
+        isEditing = false;
+        modalTitle.textContent = "Add New Goal";
+        modal.style.display = "block";
+      };
+
+      closeBtn.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      cancelBtn.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      function resetForm() {
+        document.getElementById("goalId").value = "";
+        document.getElementById("goalName").value = "";
+        document.getElementById("targetAmount").value = "";
+        document.getElementById("currentAmount").value = "0";
+        document.getElementById("deadline").value = "";
+        document.getElementById("priority").value = "";
+      }
+
+      // === TAB SWITCHING ===
       const uncompletedTab = document.getElementById("uncompletedTab");
       const completedTab = document.getElementById("completedTab");
       const uncompletedGoals = document.getElementById("uncompletedGoals");
@@ -128,7 +370,262 @@
         completedGoals.style.display = "block";
       });
 
-      // Updated Pie Chart with various shades of green
+      // === FETCH GOALS ===
+      async function fetchGoals() {
+        try {
+          const response = await fetch("http://127.0.0.1:5001/api/goal/", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (!response.ok) throw new Error("Failed to fetch goals");
+
+          const result = await response.json();
+          const goals = result.goals || []; // Added fallback in case goals array is missing
+
+          // Debug log to check if data is received
+          console.log("Fetched goals:", goals);
+
+          renderGoals(goals);
+        } catch (error) {
+          console.error("Error fetching goals:", error);
+          alert(`Error loading goals: ${error.message}`);
+        }
+      }
+
+      // === RENDER GOALS ===
+      function renderGoals(goals) {
+        const completedBody = document.getElementById("completed-goal-body");
+        const uncompletedBody = document.getElementById(
+          "uncompleted-goal-body"
+        );
+
+        completedBody.innerHTML = "";
+        uncompletedBody.innerHTML = "";
+
+        if (goals.length === 0) {
+          // Display message if no goals
+          const noGoalsRow = document.createElement("tr");
+          noGoalsRow.innerHTML = `<td colspan="6" style="text-align: center;">No goals found. Click "Add Goal" to create one.</td>`;
+          uncompletedBody.appendChild(noGoalsRow);
+
+          const noCompletedGoalsRow = document.createElement("tr");
+          noCompletedGoalsRow.innerHTML = `<td colspan="6" style="text-align: center;">No completed goals yet.</td>`;
+          completedBody.appendChild(noCompletedGoalsRow);
+          return;
+        }
+
+        goals.forEach((goal) => {
+          const priorityClass = `priority-${
+            goal.priority ? goal.priority.toLowerCase() : "medium"
+          }`;
+
+          const row = document.createElement("tr");
+          if (goal.completed) {
+            row.innerHTML = `
+              <td>${goal.name || "Unnamed Goal"}</td>
+              <td>$${(goal.target_amount || 0).toFixed(2)}</td>
+              <td>$${(goal.current_amount || 0).toFixed(2)}</td>
+              <td>${
+                formatDate(goal.completed_date) ||
+                formatDate(goal.deadline) ||
+                "N/A"
+              }</td>
+              <td class="${priorityClass}">${goal.priority || "Medium"}</td>
+              <td>
+                <button class="delete-btn" onclick="deleteGoal('${
+                  goal.id
+                }')">Delete</button>
+              </td>
+            `;
+            completedBody.appendChild(row);
+          } else {
+            row.innerHTML = `
+              <td>${goal.name || "Unnamed Goal"}</td>
+              <td>$${(goal.target_amount || 0).toFixed(2)}</td>
+              <td>$${(goal.current_amount || 0).toFixed(2)}</td>
+              <td>${formatDate(goal.deadline) || "N/A"}</td>
+              <td class="${priorityClass}">${goal.priority || "Medium"}</td>
+              <td>
+                <button class="edit-btn" onclick="openEditModal('${
+                  goal.id
+                }')">Edit</button>
+                <button class="mark-complete-btn" onclick="markGoalComplete('${
+                  goal.id
+                }')">Complete</button>
+                <button class="delete-btn" onclick="deleteGoal('${
+                  goal.id
+                }')">Delete</button>
+              </td>
+            `;
+            uncompletedBody.appendChild(row);
+          }
+        });
+      }
+
+      // Format date for display
+      function formatDate(dateString) {
+        if (!dateString) return "";
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return "";
+        return date.toLocaleDateString();
+      }
+
+      // === HANDLE FORM SUBMISSION ===
+      goalForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const goalId = document.getElementById("goalId").value;
+        const name = document.getElementById("goalName").value;
+        const targetAmount = parseFloat(
+          document.getElementById("targetAmount").value
+        );
+        const currentAmount = parseFloat(
+          document.getElementById("currentAmount").value
+        );
+        const deadline = document.getElementById("deadline").value;
+        const priority = document.getElementById("priority").value;
+
+        const goalData = {
+          name,
+          target_amount: targetAmount,
+          current_amount: currentAmount,
+          deadline,
+          priority,
+          completed: false,
+        };
+
+        try {
+          let url = "http://127.0.0.1:5001/api/goal/";
+          let method = "POST";
+
+          // If editing existing goal
+          if (isEditing && goalId) {
+            url = `http://127.0.0.1:5001/api/goal/${goalId}`;
+            method = "PUT";
+          }
+
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(goalData),
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(
+              error.message ||
+                `Failed to ${isEditing ? "update" : "create"} goal`
+            );
+          }
+
+          alert(`Goal ${isEditing ? "updated" : "added"} successfully!`);
+          modal.style.display = "none";
+          fetchGoals();
+        } catch (error) {
+          alert(`${isEditing ? "Edit" : "Add"} Goal Error: ${error.message}`);
+        }
+      });
+
+      // === OPEN EDIT MODAL ===
+      async function openEditModal(goalId) {
+        try {
+          const response = await fetch(
+            `http://127.0.0.1:5001/api/goal/${goalId}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          if (!response.ok) throw new Error("Failed to fetch goal details");
+
+          const goal = await response.json();
+
+          // Populate the form
+          document.getElementById("goalId").value = goalId;
+          document.getElementById("goalName").value = goal.name || "";
+          document.getElementById("targetAmount").value =
+            goal.target_amount || "";
+          document.getElementById("currentAmount").value =
+            goal.current_amount || 0;
+          document.getElementById("deadline").value = goal.deadline || "";
+          document.getElementById("priority").value = goal.priority || "";
+
+          // Update modal title and state
+          isEditing = true;
+          modalTitle.textContent = "Edit Goal";
+          modal.style.display = "block";
+
+          // Initialize datepicker again after populating
+          flatpickr("#deadline", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            defaultDate: goal.deadline || null,
+          });
+        } catch (error) {
+          console.error("Error loading goal details:", error);
+          alert(`Error: ${error.message}`);
+        }
+      }
+
+      // === MARK GOAL AS COMPLETE ===
+      async function markGoalComplete(goalId) {
+        try {
+          const response = await fetch(
+            `http://127.0.0.1:5001/api/goal/${goalId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                completed: true,
+                completed_date: new Date().toISOString().split("T")[0],
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || "Failed to mark as complete");
+          }
+
+          alert("Goal marked as complete!");
+          fetchGoals();
+        } catch (error) {
+          alert(`Mark Complete Error: ${error.message}`);
+        }
+      }
+
+      // === DELETE GOAL ===
+      async function deleteGoal(goalId) {
+        if (!confirm("Are you sure you want to delete this goal?")) return;
+
+        try {
+          const response = await fetch(
+            `http://127.0.0.1:5001/api/goal/${goalId}`,
+            {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || "Failed to delete goal");
+          }
+
+          alert("Goal deleted successfully!");
+          fetchGoals();
+        } catch (error) {
+          alert(`Delete Goal Error: ${error.message}`);
+        }
+      }
+
+      // === CHARTS ===
       const moneyPieCtx = document
         .getElementById("moneyPieChart")
         .getContext("2d");
@@ -139,12 +636,7 @@
           datasets: [
             {
               data: [1200, 150, 75, 300],
-              backgroundColor: [
-                "#a1d99b", // Light green
-                "#74c476", // Medium green
-                "#41ab5d", // Darker green
-                "#238b45", // Deep green
-              ],
+              backgroundColor: ["#a1d99b", "#74c476", "#41ab5d", "#238b45"],
               hoverBackgroundColor: [
                 "#92c27c",
                 "#649d5c",
@@ -154,13 +646,9 @@
             },
           ],
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-        },
+        options: { responsive: true, maintainAspectRatio: false },
       });
 
-      // Updated Line Chart with green tones for a cohesive look
       const monthlyLineCtx = document
         .getElementById("monthlyLineChart")
         .getContext("2d");
@@ -172,8 +660,8 @@
             {
               label: "Monthly Savings ($)",
               data: [200, 300, 250, 400, 350, 450, 500],
-              borderColor: "#2ca02c", // Green line color
-              backgroundColor: "rgba(44, 160, 44, 0.2)", // Light green fill
+              borderColor: "#2ca02c",
+              backgroundColor: "rgba(44, 160, 44, 0.2)",
               fill: true,
               tension: 0.4,
             },
@@ -182,11 +670,12 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          scales: {
-            y: { beginAtZero: true },
-          },
+          scales: { y: { beginAtZero: true } },
         },
       });
+
+      // === On Page Load ===
+      fetchGoals();
     </script>
   </body>
 </html>
