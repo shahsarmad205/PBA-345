@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = { first_name: firstName, last_name: lastName, email, password };
 
       try {
-        const response = await fetch('http://127.0.0.1:5001/api/auth/signup', {
+        const response = await fetch('https://pba-345.onrender.com/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
       if (!category || isNaN(amount)) continue; // Skip invalid entries
   
-      await fetch("http://127.0.0.1:5001/api/expense/", {
+      await fetch("https://pba-345.onrender.com/api/expense/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const password = document.getElementById('login-password')?.value;
 
       try {
-        const response = await fetch('http://127.0.0.1:5001/api/auth/login', {
+        const response = await fetch('https://pba-345.onrender.com/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -184,7 +184,7 @@ editIcons.forEach((icon) => {
 
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://127.0.0.1:5001/api/profile/", {
+        const response = await fetch("https://pba-345.onrender.com/api/profile/", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -236,7 +236,7 @@ editIcons.forEach((icon) => {
   const isProfilePage = document.body.classList.contains("profile-page");
   if (isProfilePage) {
     const token = localStorage.getItem("token");
-    fetch("http://127.0.0.1:5001/api/profile/", {
+    fetch("https://pba-345.onrender.com/api/profile/", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -296,13 +296,13 @@ if (token && recurringBody && nonRecurringBody) {
 }
 
 function fetchExpenses() {
-  fetch("http://127.0.0.1:5001/api/expense/?recurring=true", {
+  fetch("https://pba-345.onrender.com/api/expense/?recurring=true", {
     headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => res.json())
     .then((data) => renderExpenseTable(data, recurringBody));
 
-  fetch("http://127.0.0.1:5001/api/expense/?recurring=false", {
+  fetch("https://pba-345.onrender.com/api/expense/?recurring=false", {
     headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => res.json())
@@ -362,7 +362,7 @@ function setupExpenseButtons() {
   document.querySelectorAll(".delete-expense-btn").forEach((button) => {
     button.addEventListener("click", () => {
       const id = button.dataset.id;
-      fetch(`http://127.0.0.1:5001/api/expense/${id}`, {
+      fetch(`https://pba-345.onrender.com/api/expense/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -386,8 +386,8 @@ function submitModal() {
 
   const today = new Date().toISOString().split("T")[0];
   const url = isEditing
-    ? `http://127.0.0.1:5001/api/expense/${editingId}`
-    : "http://127.0.0.1:5001/api/expense/";
+    ? `https://pba-345.onrender.com/api/expense/${editingId}`
+    : "https://pba-345.onrender.com/api/expense/";
 
   const method = isEditing ? "PUT" : "POST";
 
@@ -445,7 +445,7 @@ function fetchGoals() {
   const token = localStorage.getItem("token");
   if (!token) return;
 
-  fetch("http://127.0.0.1:5001/api/goal", {
+  fetch("https://pba-345.onrender.com/api/goal", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -508,7 +508,7 @@ async function saveChanges() {
   }
 
   try {
-    const res = await fetch("http://127.0.0.1:5001/api/profile/", {
+    const res = await fetch("https://pba-345.onrender.com/api/profile/", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
