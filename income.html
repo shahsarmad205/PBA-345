@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Income | BudgetMate</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="income.css" />
+  </head>
+  <body class="auth-required">
+    <header class="top-nav">
+      <div class="logo-brand">
+        <img src="budgetmate-logo.png" alt="BudgetMate Logo" class="logo" />
+        <span class="logo-text">
+          <span class="logo-regular">Budget</span
+          ><span class="logo-bold">Mate</span>
+        </span>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html">Home</a>
+        <a href="expenses.html">Expenses</a>
+        <a href="income.html" class="active">Income</a>
+        <a href="goals.html">Goals</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+    </header>
+
+    <main class="content-section">
+      <h1>Income</h1>
+      <p>Manage your income details below</p>
+
+      <section class="current-income-section">
+        <h2>Current Income Details</h2>
+        <div class="income-item">
+          <label for="salary">Salary:</label>
+          <input type="text" id="salary" value="$105,000" readonly />
+          <button class="edit-btn" onclick="enableEdit('salary')">Edit</button>
+        </div>
+        <div class="income-item">
+          <label for="monthlyIncome">Monthly Income:</label>
+          <input type="text" id="monthlyIncome" value="$8,750" readonly />
+          <button class="edit-btn" onclick="enableEdit('monthlyIncome')">
+            Edit
+          </button>
+        </div>
+        <button
+          id="save-btn"
+          class="save-btn"
+          style="display: none"
+          onclick="saveChanges()"
+        >
+          Save Changes
+        </button>
+      </section>
+
+      <section class="additional-income-section">
+        <h2>Additional Income Sources</h2>
+        <table class="income-table">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Amount</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Freelance Work</td>
+              <td>$2,000</td>
+              <td>
+                <button class="edit-btn" onclick="editIncomeSource(this)">
+                  Edit
+                </button>
+                <button class="delete-btn" onclick="deleteIncomeSource(this)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="add-btn" onclick="addIncome()">
+          Add Another Income
+        </button>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

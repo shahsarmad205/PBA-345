@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Expenses | BudgetMate</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="expense.css" />
+  </head>
+  <body>
+    <header class="top-nav">
+      <div class="logo-brand">
+        <img src="budgetmate-logo.png" alt="BudgetMate Logo" class="logo" />
+        <span class="logo-text">
+          <span class="logo-regular">Budget</span
+          ><span class="logo-bold">Mate</span>
+        </span>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html">Home</a>
+        <a href="expense.html">Expenses</a>
+        <a href="income.html">Income</a>
+        <a href="goals.html">Goals</a>
+        <a href="profileSettings.html">Profile</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="content-section">
+        <h1>Expenses</h1>
+        <p>Manage your spending and categories</p>
+
+        <div class="tab-section">
+          <button class="tab-btn active" id="recurringTab">Recurring</button>
+          <button class="tab-btn" id="nonRecurringTab">Non-recurring</button>
+        </div>
+
+        <!-- "Add Category" Button -->
+        <button class="add-category-btn" id="add-category-btn">
+          Add Category
+        </button>
+
+        <!-- Recurring Expenses Table -->
+        <div class="expenses-container" id="recurringExpenses">
+          <table class="expenses-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="recurring-expense-body">
+              <!-- Dynamic content will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Non-Recurring Expenses Table (now dynamic too) -->
+        <div
+          class="expenses-container"
+          id="nonRecurringExpenses"
+          style="display: none"
+        >
+          <table class="expenses-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="nonrecurring-expense-body">
+              <!-- Dynamic content will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="script.js"></script>
+    <div class="modal-overlay" id="expense-modal">
+      <div class="modal">
+        <h3>Add New Expense</h3>
+        <label>
+          Category:
+          <input type="text" id="modal-category" />
+        </label>
+        <label>
+          Amount:
+          <input type="number" id="modal-amount" />
+        </label>
+        <label>
+          Recurring:
+          <select id="modal-recurring">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </label>
+        <div class="modal-buttons">
+          <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+          <button class="confirm-btn" onclick="submitModal()">Add</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

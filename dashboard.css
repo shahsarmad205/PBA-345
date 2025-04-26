@@ -1,0 +1,104 @@
+/* General Page Styling */
+/* BODY */
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #e5ecdf;
+}
+
+/* HEADER */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #d8e3d1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.logo {
+  height: 40px;
+}
+
+.logo-text {
+  font-family: "Merriweather", serif;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.logo-regular {
+  font-weight: 400;
+  color: #4a5e49;
+}
+
+.logo-bold {
+  font-weight: 700;
+  color: #2e4c2b;
+}
+
+/* NAVIGATION LINKS */
+.nav-links a {
+  margin: 0 0.75rem;
+  text-decoration: none;
+  color: #3a4f36;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #2e4c2b;
+}
+
+/* DASHBOARD GRID */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem 3rem;
+  justify-content: center;
+  align-content: center;
+  padding: 3rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: calc(100vh - 150px); /* subtract header height + padding */
+}
+
+/* DASHBOARD CARD */
+.card {
+  background-color: white;
+  border-radius: 18px;
+  padding: 2.2rem 1.6rem;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 1px solid #dee6d8;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  margin: 0.8rem 0;
+  color: #324c2c;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.card p {
+  color: #6f776e;
+  font-size: 1rem;
+  margin-top: 0.4rem;
+}

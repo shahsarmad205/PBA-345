@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goals | BudgetMate</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="goals.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add Flatpickr for date picking -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  </head>
+
+  <body class="auth-required">
+    <header class="top-nav">
+      <div class="logo-brand">
+        <img src="budgetmate-logo.png" alt="BudgetMate Logo" class="logo" />
+        <span class="logo-text">
+          <span class="logo-regular">Budget</span
+          ><span class="logo-bold">Mate</span>
+        </span>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html">Home</a>
+        <a href="expenses.html">Expenses</a>
+        <a href="income.html">Income</a>
+        <a href="goals.html" class="active">Goals</a>
+        <a href="profileSettings.html">Profile</a>
+      </nav>
+    </header>
+
+    <main class="content-section">
+      <h1>Goals</h1>
+      <p>Set and achieve saving targets</p>
+
+      <div class="goals-charts-container">
+        <section class="goals-section">
+          <div class="tab-section">
+            <button class="tab-btn active" id="uncompletedTab">
+              Uncompleted Goals
+            </button>
+            <button class="tab-btn" id="completedTab">Completed Goals</button>
+          </div>
+
+          <button class="add-goal-btn" id="openModalBtn">Add Goal</button>
+
+          <div class="goals-container" id="uncompletedGoals">
+            <table class="goals-table">
+              <thead>
+                <tr>
+                  <th>Goal</th>
+                  <th>Target Amount</th>
+                  <th>Current Amount</th>
+                  <th>Date By</th>
+                  <th>Priority</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="uncompleted-goal-body">
+                <!-- Dynamically filled -->
+              </tbody>
+            </table>
+          </div>
+
+          <div
+            class="goals-container"
+            id="completedGoals"
+            style="display: none"
+          >
+            <table class="goals-table">
+              <thead>
+                <tr>
+                  <th>Goal</th>
+                  <th>Target Amount</th>
+                  <th>Saved Amount</th>
+                  <th>Completed On</th>
+                  <th>Priority</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="completed-goal-body">
+                <!-- Dynamically filled -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+          <div class="chart-box">
+            <h3>Where Money Went</h3>
+            <canvas id="moneyPieChart"></canvas>
+          </div>
+
+          <div class="chart-box">
+            <h3>Comparison of Monthly Saving</h3>
+            <canvas id="monthlyLineChart"></canvas>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Modal for adding/editing goals -->
+    <div id="goalModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modalTitle">Add New Goal</h2>
+
+        <form id="goalForm">
+          <input type="hidden" id="goalId" value="" />
+
+          <div class="form-group">
+            <label for="goalName">Goal Name</label>
+            <input type="text" id="goalName" required />
+          </div>
+
+          <div class="form-group">
+            <label for="targetAmount">Target Amount ($)</label>
+            <input
+              type="number"
+              id="targetAmount"
+              min="0"
+              step="0.01"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="currentAmount">Current Amount ($)</label>
+            <input
+              type="number"
+              id="currentAmount"
+              min="0"
+              step="0.01"
+              value="0"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="deadline">Target Date</label>
+            <input type="text" id="deadline" class="datepicker" required />
+          </div>
+
+          <div class="form-group">
+            <label for="priority">Priority</label>
+            <select id="priority" required>
+              <option value="">-- Select Priority --</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="cancelBtn">Cancel</button>
+            <button type="submit" id="saveGoalBtn">Save Goal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <style>
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        position: relative;
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 25px;
+        border-radius: 8px;
+        width: 500px;
+        max-width: 90%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .form-actions button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      #cancelBtn {
+        background-color: #f2f2f2;
+        color: #333;
+      }
+
+      #saveGoalBtn {
+        background-color: #2ca02c;
+        color: white;
+      }
+
+      /* Table improvements */
+      .goals-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .goals-table th,
+      .goals-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .goals-table th {
+        background-color: #f8f8f8;
+      }
+
+      .edit-btn,
+      .mark-complete-btn,
+      .delete-btn {
+        padding: 5px 10px;
+        margin-right: 5px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .edit-btn {
+        background-color: #4c9aff;
+        color: white;
+      }
+
+      .mark-complete-btn {
+        background-color: #2ca02c;
+        color: white;
+      }
+
+      .delete-btn {
+        background-color: #ff4d4d;
+        color: white;
+      }
+
+      /* Priority colors */
+      .priority-low {
+        color: #2ca02c;
+      }
+
+      .priority-medium {
+        color: #ff9933;
+      }
+
+      .priority-high {
+        color: #ff4d4d;
+      }
+
+      /* Debug section */
+      .debug-section {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .debug-section h3 {
+        margin-top: 0;
+      }
+    </style>
+
+    <script>
+      const token = localStorage.getItem("token");
+      let allGoals = []; // Global variable to store goals
+
+      // === MODAL FUNCTIONALITY ===
+      const modal = document.getElementById("goalModal");
+      const openModalBtn = document.getElementById("openModalBtn");
+      const closeBtn = document.querySelector(".close");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const goalForm = document.getElementById("goalForm");
+      const modalTitle = document.getElementById("modalTitle");
+      let isEditing = false;
+
+      // Initialize datepicker
+      document.addEventListener("DOMContentLoaded", function () {
+        flatpickr("#deadline", {
+          dateFormat: "Y-m-d",
+          minDate: "today",
+        });
+
+        // Fetch goals on page load
+        fetchGoals();
+      });
+
+      openModalBtn.onclick = function () {
+        resetForm();
+        isEditing = false;
+        modalTitle.textContent = "Add New Goal";
+        modal.style.display = "block";
+      };
+
+      closeBtn.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      cancelBtn.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      function resetForm() {
+        document.getElementById("goalId").value = "";
+        document.getElementById("goalName").value = "";
+        document.getElementById("targetAmount").value = "";
+        document.getElementById("currentAmount").value = "0";
+        document.getElementById("deadline").value = "";
+        document.getElementById("priority").value = "";
+      }
+
+      // === TAB SWITCHING ===
+      const uncompletedTab = document.getElementById("uncompletedTab");
+      const completedTab = document.getElementById("completedTab");
+      const uncompletedGoals = document.getElementById("uncompletedGoals");
+      const completedGoals = document.getElementById("completedGoals");
+
+      uncompletedTab.addEventListener("click", () => {
+        uncompletedTab.classList.add("active");
+        completedTab.classList.remove("active");
+        uncompletedGoals.style.display = "block";
+        completedGoals.style.display = "none";
+      });
+
+      completedTab.addEventListener("click", () => {
+        completedTab.classList.add("active");
+        uncompletedTab.classList.remove("active");
+        uncompletedGoals.style.display = "none";
+        completedGoals.style.display = "block";
+      });
+
+      // === FETCH GOALS ===
+      async function fetchGoals() {
+        try {
+          console.log("Fetching goals from API...");
+
+          // Show loading indicator in the table
+          document.getElementById(
+            "uncompleted-goal-body"
+          ).innerHTML = `<tr><td colspan="6" style="text-align: center;">Loading goals...</td></tr>`;
+
+          document.getElementById(
+            "completed-goal-body"
+          ).innerHTML = `<tr><td colspan="6" style="text-align: center;">Loading goals...</td></tr>`;
+
+          const response = await fetch("http://127.0.0.1:5001/api/goal/", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          console.log("API Response status:", response.status);
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Error response body:", errorText);
+            throw new Error(
+              `Failed to fetch goals: ${response.status} ${response.statusText}`
+            );
+          }
+
+          const responseText = await response.text();
+          console.log("Response body:", responseText);
+
+          // Try to parse the response as JSON
+          let result;
+          try {
+            result = JSON.parse(responseText);
+          } catch (e) {
+            console.error("Failed to parse response as JSON:", e);
+            throw new Error("Invalid JSON response from server");
+          }
+
+          // Debug the structure of the response
+          console.log("Parsed response:", result);
+
+          // Handle different response formats
+          let goals = [];
+          if (Array.isArray(result)) {
+            goals = result;
+          } else if (result && typeof result === "object") {
+            // Check for common patterns in API responses
+            if (Array.isArray(result.goals)) {
+              goals = result.goals;
+            } else if (Array.isArray(result.data)) {
+              goals = result.data;
+            } else if (Array.isArray(result.items)) {
+              goals = result.items;
+            } else if (Array.isArray(result.results)) {
+              goals = result.results;
+            } else if (result.goal && typeof result.goal === "object") {
+              // Single goal response
+              goals = [result.goal];
+            } else {
+              // Last resort: check if the object itself looks like a goal
+              if (result.id || result.name || result.target_amount) {
+                goals = [result];
+              } else {
+                // Look for any array property that might contain goals
+                const arrayProps = Object.keys(result).filter((key) =>
+                  Array.isArray(result[key])
+                );
+                if (arrayProps.length > 0) {
+                  // Use the first array property found
+                  goals = result[arrayProps[0]];
+                }
+              }
+            }
+          }
+
+          console.log("Extracted goals:", goals);
+
+          // Update global goals array
+          allGoals = goals || [];
+
+          renderGoals(allGoals);
+        } catch (error) {
+          console.error("Error fetching goals:", error);
+          document.getElementById(
+            "uncompleted-goal-body"
+          ).innerHTML = `<tr><td colspan="6" style="text-align: center;">Error loading goals: ${error.message}</td></tr>`;
+
+          document.getElementById(
+            "completed-goal-body"
+          ).innerHTML = `<tr><td colspan="6" style="text-align: center;">Error loading goals: ${error.message}</td></tr>`;
+        }
+      }
+
+      // === RENDER GOALS ===
+      function renderGoals(goals) {
+        const completedBody = document.getElementById("completed-goal-body");
+        const uncompletedBody = document.getElementById(
+          "uncompleted-goal-body"
+        );
+
+        completedBody.innerHTML = "";
+        uncompletedBody.innerHTML = "";
+
+        console.log("Rendering goals:", goals);
+
+        // Count for each category
+        let uncompletedCount = 0;
+        let completedCount = 0;
+
+        if (!goals || goals.length === 0) {
+          // Display message if no goals
+          const noGoalsRow = document.createElement("tr");
+          noGoalsRow.innerHTML = `<td colspan="6" style="text-align: center;">No goals found. Click "Add Goal" to create one.</td>`;
+          uncompletedBody.appendChild(noGoalsRow);
+
+          const noCompletedGoalsRow = document.createElement("tr");
+          noCompletedGoalsRow.innerHTML = `<td colspan="6" style="text-align: center;">No completed goals yet.</td>`;
+          completedBody.appendChild(noCompletedGoalsRow);
+          return;
+        }
+
+        goals.forEach((goal) => {
+          // Handle different property name formats
+          const name =
+            goal.name || goal.goal_name || goal.title || "Unnamed Goal";
+          const targetAmount =
+            goal.target_amount ||
+            goal.targetAmount ||
+            goal.target ||
+            goal.amount ||
+            0;
+          const currentAmount =
+            goal.current_amount ||
+            goal.currentAmount ||
+            goal.current ||
+            goal.saved ||
+            0;
+          const deadline =
+            goal.deadline ||
+            goal.due_date ||
+            goal.target_date ||
+            goal.date ||
+            "";
+          const priority = goal.priority || "Medium";
+          const completed =
+            goal.completed ||
+            goal.is_completed ||
+            goal.status === "completed" ||
+            false;
+          const completedDate =
+            goal.completed_date ||
+            goal.completedDate ||
+            goal.completion_date ||
+            "";
+          const goalId = goal.id || goal._id || "";
+
+          const priorityClass = `priority-${priority.toLowerCase()}`;
+
+          const row = document.createElement("tr");
+          if (completed) {
+            completedCount++;
+            row.innerHTML = `
+              <td>${escapeHtml(name)}</td>
+              <td>$${parseFloat(targetAmount).toFixed(2)}</td>
+              <td>$${parseFloat(currentAmount).toFixed(2)}</td>
+              <td>${
+                formatDate(completedDate) || formatDate(deadline) || "N/A"
+              }</td>
+              <td class="${priorityClass}">${escapeHtml(priority)}</td>
+              <td>
+                <button class="delete-btn" onclick="deleteGoal('${goalId}')">Delete</button>
+              </td>
+            `;
+            completedBody.appendChild(row);
+          } else {
+            uncompletedCount++;
+            row.innerHTML = `
+              <td>${escapeHtml(name)}</td>
+              <td>$${parseFloat(targetAmount).toFixed(2)}</td>
+              <td>$${parseFloat(currentAmount).toFixed(2)}</td>
+              <td>${formatDate(deadline) || "N/A"}</td>
+              <td class="${priorityClass}">${escapeHtml(priority)}</td>
+              <td>
+                <button class="edit-btn" onclick="openEditModal('${goalId}')">Edit</button>
+                <button class="mark-complete-btn" onclick="markGoalComplete('${goalId}')">Complete</button>
+                <button class="delete-btn" onclick="deleteGoal('${goalId}')">Delete</button>
+              </td>
+            `;
+            uncompletedBody.appendChild(row);
+          }
+        });
+
+        // Update tabs with counts
+        uncompletedTab.textContent = `Uncompleted Goals (${uncompletedCount})`;
+        completedTab.textContent = `Completed Goals (${completedCount})`;
+
+        // If no goals in a category, show message
+        if (uncompletedCount === 0) {
+          const noGoalsRow = document.createElement("tr");
+          noGoalsRow.innerHTML = `<td colspan="6" style="text-align: center;">No uncompleted goals found.</td>`;
+          uncompletedBody.appendChild(noGoalsRow);
+        }
+
+        if (completedCount === 0) {
+          const noCompletedGoalsRow = document.createElement("tr");
+          noCompletedGoalsRow.innerHTML = `<td colspan="6" style="text-align: center;">No completed goals yet.</td>`;
+          completedBody.appendChild(noCompletedGoalsRow);
+        }
+      }
+
+      // Escape HTML to prevent XSS
+      function escapeHtml(text) {
+        if (!text) return "";
+        return text
+          .toString()
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      // Format date for display
+      function formatDate(dateString) {
+        if (!dateString) return "";
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return dateString; // Return original if invalid
+        return date.toLocaleDateString();
+      }
+
+      // === HANDLE FORM SUBMISSION ===
+      goalForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const goalId = document.getElementById("goalId").value;
+        const name = document.getElementById("goalName").value;
+        const targetAmount = parseFloat(
+          document.getElementById("targetAmount").value
+        );
+        const currentAmount = parseFloat(
+          document.getElementById("currentAmount").value
+        );
+        const deadline = document.getElementById("deadline").value;
+        const priority = document.getElementById("priority").value;
+
+        const goalData = {
+          name,
+          target_amount: targetAmount,
+          current_amount: currentAmount,
+          deadline,
+          priority,
+          completed: false,
+        };
+
+        console.log("Submitting goal data:", goalData);
+
+        try {
+          let url = "http://127.0.0.1:5001/api/goal/";
+          let method = "POST";
+
+          // If editing existing goal
+          if (isEditing && goalId) {
+            url = `http://127.0.0.1:5001/api/goal/${goalId}`;
+            method = "PUT";
+          }
+
+          console.log(`${method} request to ${url}`);
+
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(goalData),
+          });
+
+          console.log("Response status:", response.status);
+
+          const responseData = await response.text();
+          console.log("Response data:", responseData);
+
+          if (!response.ok) {
+            throw new Error(
+              `Failed to ${isEditing ? "update" : "create"} goal: ${
+                response.status
+              } ${response.statusText}`
+            );
+          }
+
+          alert(`Goal ${isEditing ? "updated" : "added"} successfully!`);
+          modal.style.display = "none";
+
+          // If adding a new goal, manually add it to the goals array
+          if (!isEditing) {
+            try {
+              // Try to parse the response as JSON first
+              const newGoal = JSON.parse(responseData);
+
+              // Check if the response contains the goal directly or nested
+              if (newGoal.id || newGoal.name) {
+                // Response is the goal itself
+                allGoals.push(newGoal);
+              } else if (newGoal.goal) {
+                // Response has the goal in a 'goal' property
+                allGoals.push(newGoal.goal);
+              } else if (newGoal.data) {
+                // Response has the goal in a 'data' property
+                allGoals.push(newGoal.data);
+              }
+            } catch (e) {
+              console.log(
+                "Couldn't parse new goal from response, will fetch all goals instead"
+              );
+            }
+          }
+
+          // Refresh goals from the server
+          fetchGoals();
+        } catch (error) {
+          console.error("Error submitting goal:", error);
+          alert(`${isEditing ? "Edit" : "Add"} Goal Error: ${error.message}`);
+        }
+      });
+
+      // === OPEN EDIT MODAL ===
+      async function openEditModal(goalId) {
+        console.log("Opening edit modal for goal ID:", goalId);
+
+        try {
+          // First try to find the goal in our local array
+          let goal = allGoals.find((g) => g.id === goalId || g._id === goalId);
+
+          if (!goal) {
+            // If not found locally, fetch from API
+            console.log("Goal not found locally, fetching from API");
+            const response = await fetch(
+              `http://127.0.0.1:5001/api/goal/${goalId}`,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.error("API error response:", errorText);
+              throw new Error("Failed to fetch goal details");
+            }
+
+            const responseData = await response.json();
+            console.log("Fetched goal details:", responseData);
+
+            // Handle different response formats
+            if (responseData.goal) {
+              goal = responseData.goal;
+            } else if (responseData.data) {
+              goal = responseData.data;
+            } else {
+              goal = responseData;
+            }
+          }
+
+          if (!goal) {
+            throw new Error("Goal not found");
+          }
+
+          // Populate the form
+          document.getElementById("goalId").value = goalId;
+          document.getElementById("goalName").value =
+            goal.name || goal.goal_name || "";
+          document.getElementById("targetAmount").value =
+            goal.target_amount || goal.targetAmount || "";
+          document.getElementById("currentAmount").value =
+            goal.current_amount || goal.currentAmount || 0;
+          document.getElementById("deadline").value =
+            goal.deadline || goal.due_date || "";
+          document.getElementById("priority").value = goal.priority || "";
+
+          // Update modal title and state
+          isEditing = true;
+          modalTitle.textContent = "Edit Goal";
+          modal.style.display = "block";
+
+          // Initialize datepicker again after populating
+          flatpickr("#deadline", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            defaultDate: goal.deadline || goal.due_date || null,
+          });
+        } catch (error) {
+          console.error("Error loading goal details:", error);
+          alert(`Error: ${error.message}`);
+        }
+      }
+
+      // === MARK GOAL AS COMPLETE ===
+      async function markGoalComplete(goalId) {
+        console.log("Marking goal as complete:", goalId);
+
+        try {
+          const response = await fetch(
+            `http://127.0.0.1:5001/api/goal/${goalId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                completed: true,
+                completed_date: new Date().toISOString().split("T")[0],
+              }),
+            }
+          );
+
+          console.log("Response status:", response.status);
+          const responseData = await response.text();
+          console.log("Response data:", responseData);
+
+          if (!response.ok) {
+            throw new Error(
+              `Failed to mark as complete: ${response.status} ${response.statusText}`
+            );
+          }
+
+          // Update locally
+          const goalIndex = allGoals.findIndex(
+            (g) => g.id === goalId || g._id === goalId
+          );
+          if (goalIndex >= 0) {
+            allGoals[goalIndex].completed = true;
+            allGoals[goalIndex].completed_date = new Date()
+              .toISOString()
+              .split("T")[0];
+            renderGoals(allGoals);
+          } else {
+            // If goal not found locally, fetch all goals again
+            fetchGoals();
+          }
+
+          alert("Goal marked as complete!");
+        } catch (error) {
+          console.error("Error marking goal complete:", error);
+          alert(`Mark Complete Error: ${error.message}`);
+        }
+      }
+
+      // === DELETE GOAL ===
+      async function deleteGoal(goalId) {
+        console.log("Deleting goal:", goalId);
+
+        if (!confirm("Are you sure you want to delete this goal?")) return;
+
+        try {
+          const response = await fetch(
+            `http://127.0.0.1:5001/api/goal/${goalId}`,
+            {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          console.log("Response status:", response.status);
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Error response:", errorText);
+            throw new Error(
+              `Failed to delete goal: ${response.status} ${response.statusText}`
+            );
+          }
+
+          // Remove goal from local array
+          allGoals = allGoals.filter(
+            (g) => g.id !== goalId && g._id !== goalId
+          );
+          renderGoals(allGoals);
+
+          alert("Goal deleted successfully!");
+        } catch (error) {
+          console.error("Error deleting goal:", error);
+          alert(`Delete Goal Error: ${error.message}`);
+
+          // Fetch all goals again to ensure consistency
+          fetchGoals();
+        }
+      }
+
+      // === CHARTS ===
+      const moneyPieCtx = document
+        .getElementById("moneyPieChart")
+        .getContext("2d");
+      const moneyPieChart = new Chart(moneyPieCtx, {
+        type: "pie",
+        data: {
+          labels: ["Rent", "Utilities", "Subscriptions", "Groceries"],
+          datasets: [
+            {
+              data: [1200, 150, 75, 300],
+              backgroundColor: ["#a1d99b", "#74c476", "#41ab5d", "#238b45"],
+              hoverBackgroundColor: [
+                "#92c27c",
+                "#649d5c",
+                "#328750",
+                "#1e6838",
+              ],
+            },
+          ],
+        },
+        options: { responsive: true, maintainAspectRatio: false },
+      });
+
+      const monthlyLineCtx = document
+        .getElementById("monthlyLineChart")
+        .getContext("2d");
+      const monthlyLineChart = new Chart(monthlyLineCtx, {
+        type: "line",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+          datasets: [
+            {
+              label: "Monthly Savings ($)",
+              data: [200, 300, 250, 400, 350, 450, 500],
+              borderColor: "#2ca02c",
+              backgroundColor: "rgba(44, 160, 44, 0.2)",
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { beginAtZero: true } },
+        },
+      });
+    </script>
+  </body>
+</html>

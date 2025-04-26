@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BudgetMate Dashboard</title>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body class="auth-required">
+    <header class="top-nav">
+      <div class="logo-brand">
+        <img src="budgetmate-logo.png" alt="BudgetMate Logo" class="logo" />
+        <span class="logo-text">
+          <span class="logo-regular">Budget</span
+          ><span class="logo-bold">Mate</span>
+        </span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="dashboard.html" class="active">Home</a>
+        <a href="expenses.html">Expenses</a>
+        <a href="income.html">Income</a>
+        <a href="goals.html">Goals</a>
+        <a href="profileSettings.html">Profile</a>
+      </nav>
+    </header>
+
+    <main class="dashboard">
+      <div class="card" onclick="location.href='expenses.html'">
+        <h3>Expenses</h3>
+        <p>Track your spending habits</p>
+      </div>
+      <div class="card" onclick="location.href='income.html'">
+        <h3>Income</h3>
+        <p>Record your earnings</p>
+      </div>
+      <div class="card" onclick="location.href='goals.html'">
+        <h3>Goals</h3>
+        <p>Set and achieve saving targets</p>
+      </div>
+      <div class="card" onclick="location.href='profileSettings.html'">
+        <h3>Profile</h3>
+        <p>Manage your account</p>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
